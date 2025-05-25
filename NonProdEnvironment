@@ -1,0 +1,267 @@
+-- ===============================================
+-- Author:Shubham Giri
+-- Date: dd/mm/yyyy
+-- Description: Seed script for NonProd user group mapping 
+-- ================================================
+SET ANSI_NULLS ON;
+SET NOCOUNT ON;
+SET QUOTED_IDENTIFIER ON;
+
+-------------------------- [ADD Users] ----------------------
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[Users] WHERE [UserID] 
+	IN('AdminUser','User1','User2','User3','User4','User5','User6','User7','User8','User9','User10','User10'))
+	BEGIN
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('AdminUser', 'EnterPasswordHere', 'AdminUser', 'AdminUser', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User1', 'EnterPasswordHere', 'FamilyName1', 'GivenName1', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User2', 'EnterPasswordHere', 'FamilyName2', 'GivenName2', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User3', 'EnterPasswordHere', 'FamilyName3', 'GivenName3', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User4', 'EnterPasswordHere', 'FamilyName4', 'GivenName4', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User5', 'EnterPasswordHere', 'FamilyName5', 'GivenName5', 'Y');
+
+		INSERT INTO [Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User6', 'EnterPasswordHere', 'FamilyName6', 'GivenName6', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User7', 'EnterPasswordHere', 'FamilyName7', 'GivenName7', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User8', 'EnterPasswordHere', 'FamilyName8', 'GivenName8', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User9', 'EnterPasswordHere', 'FamilyName9', 'GivenName9', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User10', 'EnterPasswordHere', 'FamilyName10', 'GivenName10', 'Y');
+
+		INSERT INTO [dbo].[Users]([UserID],[Password],[FamilyName],[GivenName],[IsActive])
+		VALUES('User10', 'EnterPasswordHere', 'FamilyName11', 'GivenName11', 'Y');
+	END
+---------------------- [UserGroups] ----------------------
+
+	IF NOT EXISTS(SELECT * FROM [dbo].[UserGroups] WHERE [Code] IN('JusticeUse1','JusticeUse2','JusticeUse3','JusticeUse4'))
+	BEGIN
+		INSERT INTO [dbo].[UserGroups]([Code],[Name],[Description],[IsActive])
+		VALUES('JusticeUserCode1', 'JusticeUserName1', 'Description1', 'Y');
+
+		INSERT INTO [dbo].[UserGroups]([Code],[Name],[Description],[IsActive])
+		VALUES('JusticeUserCode2', 'JusticeUserName2', 'Description2', 'Y');
+
+		INSERT INTO [dbo].[UserGroups]([Code],[Name],[Description],[IsActive])
+		VALUES('JusticeUserCode3', 'JusticeUserName3', 'Description3', 'Y');
+
+		INSERT INTO [dbo].[UserGroups]([Code],[Name],[Description],[IsActive])
+		VALUES('JusticeUserCode4', 'JusticeUserName4', 'Description3', 'Y');
+	END
+
+---------------------- [Officer] ----------------------
+----- We need only 9 officer, AdminUser User doesn't required any officer
+
+	IF Not EXISTS(SELECT * FROM [dbo].[Officer] WHERE [Code] IN('106','107','108','109'))
+	BEGIN
+		INSERT INTO [dbo].[Officer]([Code],[GivenName],[FamilyName],[Initials],[Status],[OfficerIDNo],[BadgeTypeID],[Rank],[StateID],[StationCodeID])
+		VALUES('106', 'Bruce', 'Lee', 'BL', '0', '106', 2, '106', 1, 2);
+
+		INSERT INTO [dbo].[Officer]([Code],[GivenName],[FamilyName],[Initials],[Status],[OfficerIDNo],[BadgeTypeID],[Rank],[StateID],[StationCodeID])
+		VALUES('107', 'Chine', 'Chan', 'CC', '0', '107', 2, '107', 1, 3);
+
+		INSERT INTO [dbo].[Officer]([Code],[GivenName],[FamilyName],[Initials],[Status],[OfficerIDNo],[BadgeTypeID],[Rank],[StateID],[StationCodeID])
+		VALUES('108', 'Harry', 'Shon', 'HS', '0', '108', 2, '108', 1, 1);
+
+		INSERT INTO [dbo].[Officer]([Code],[GivenName],[FamilyName],[Initials],[Status],[OfficerIDNo],[BadgeTypeID],[Rank],[StateID],[StationCodeID])
+		VALUES('109', 'Adam', 'Winslad', 'AW', '0', '109', 2, '109', 1, 2);
+	END
+
+-------- [Officer] Association With [AssociatedUserID] ---------
+
+	IF NOT EXISTS(SELECT * FROM [dbo].[Officer] WHERE [AssociatedUserID] 
+	IN('User4','User5','User6','User7','User8','User9','User10','User10'))
+	BEGIN
+		UPDATE [dbo].[Officer] SET [AssociatedUserID]='User4' WHERE [Code]='102'
+		UPDATE [dbo].[Officer] SET [AssociatedUserID]='User5' WHERE [Code]='103'
+		UPDATE [dbo].[Officer] SET [AssociatedUserID]='User6' WHERE [Code]='104'
+		UPDATE [dbo].[Officer] SET [AssociatedUserID]='User7' WHERE [Code]='105'
+		UPDATE [dbo].[Officer] SET [AssociatedUserID]='User8' WHERE [Code]='106'
+		UPDATE [dbo].[Officer] SET [AssociatedUserID]='User9' WHERE [Code]='107'
+		UPDATE [dbo].[Officer] SET [AssociatedUserID]='User10' WHERE [Code]='108'
+		UPDATE [dbo].[Officer] SET [AssociatedUserID]='User10' WHERE [Code]='109'
+	END
+
+----- Associate [SupervisorUserID] to [AssociatedUserID] in [Officer] table -----
+
+	IF NOT EXISTS(SELECT * FROM [dbo].[Officer] WHERE [SupervisorUserID] 
+	IN('User4','User5','User6','User7','User7','User7','User7'))
+	BEGIN
+		UPDATE [dbo].[Officer] SET [SupervisorUserID] = 'User4' WHERE [AssociatedUserID]='User5'
+		UPDATE [dbo].[Officer] SET [SupervisorUserID] = 'User5' WHERE [AssociatedUserID]='User6'
+		UPDATE [dbo].[Officer] SET [SupervisorUserID] = 'User6' WHERE [AssociatedUserID]='User7'
+		UPDATE [dbo].[Officer] SET [SupervisorUserID] = 'User7' WHERE [AssociatedUserID]='User8'
+		UPDATE [dbo].[Officer] SET [SupervisorUserID] = 'User7' WHERE [AssociatedUserID]='User9'
+		UPDATE [dbo].[Officer] SET [SupervisorUserID] = 'User7' WHERE [AssociatedUserID]='User10'
+		UPDATE [dbo].[Officer] SET [SupervisorUserID] = 'User7' WHERE [AssociatedUserID]='User10'
+	END
+
+---------------------- [UserGroupMappings] ----------------------
+-- Note :- Before inserting verify the groupIds according to userIds
+-- Existing UserGroupMapping Required To Delete Before Insertion
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[UserGroupMappings] WHERE [UserID] 
+	IN('AdminUser','User1','User2','User3','User4','User5','User6','User7','User8','User9','User10','User10'))
+	BEGIN
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('AdminUser', 7);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User1', 8);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User2', 9);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User3', 7);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User3', 5);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User4', 1);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User5', 2);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User6', 3);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User7', 4);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User8', 13);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User9', 10);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User10', 11);
+
+		INSERT INTO [dbo].[UserGroupMappings]([UserID],[GroupID])
+		VALUES('User10', 12);
+	END
+
+---------------------- [OfficerRoleMapping] ----------------------
+------ Existing [OfficerRoleMapping] required to delete before insertion
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] IN('3','4','5','6','7','8','9','10'))
+	BEGIN
+		INSERT INTO [dbo].[OfficerRoleMapping]([OfficerID],[RoleID])
+		VALUES(3, 4);
+		INSERT INTO [dbo].[OfficerRoleMapping]([OfficerID],[RoleID])
+		VALUES(4, 5);
+		INSERT INTO [dbo].[OfficerRoleMapping]([OfficerID],[RoleID])
+		VALUES(5, 9);
+		INSERT INTO [dbo].[OfficerRoleMapping]([OfficerID],[RoleID])
+		VALUES(6, 6);
+		INSERT INTO [dbo].[OfficerRoleMapping]([OfficerID],[RoleID])
+		VALUES(7, 7);
+		INSERT INTO [dbo].[OfficerRoleMapping]([OfficerID],[RoleID])
+		VALUES(8, 8);
+		INSERT INTO [dbo].[OfficerRoleMapping]([OfficerID],[RoleID])
+		VALUES(9, 10);
+		INSERT INTO [dbo].[OfficerRoleMapping]([OfficerID],[RoleID])
+		VALUES(10, 11);
+	END
+
+----------------- Caseload GeoGraphicLocation Domain Insertion -----------------
+
+	IF NOT EXISTS (SELECT * FROM [dbo].[GeographicDomain] WHERE [CODE] 
+	IN('NORTH','TEAM8','3081','HEIDEWEST','GIPPSLAND','PAKENTEAM1','3962','AGNES','WEST','TEAM1','3034','AVONDHEIGH','EASTERN','BOXHILL','3147','ASHBURTON'))
+	BEGIN
+		---- SET 1
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('NORTH', 'NORTH', 'NORTH', 'R', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('TEAM8', 'TEAM 8', 'TEAM 8', 'D', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('3081', '3081', '3081', 'P', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('HEIDEWEST', 'HEIDELBERG WEST', '3081 in HEIDELBERG WEST', 'S', 'Y');
+
+
+		---- SET 2
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('GIPPSLAND', 'PAKENHAM', 'PAKENHAM', 'R', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('PAKENTEAM1', 'PAKENHAM TEAM 1', 'PAKENHAM TEAM 1', 'D', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('3962', '3962', '3962', 'P', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('AGNES', 'AGNES', '3962 in AGNES', 'S', 'Y');
+
+
+		---- SET 3
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('WEST', 'WEST', 'WEST', 'R', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('TEAM1', 'TEAM 1', 'TEAM 1', 'D', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('3034', '3034', '3034', 'P', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('AVONDHEIGH', 'AVONDALE HEIGHTS', '3034 in AVONDALE HEIGHTS', 'S', 'Y');
+
+
+		---- SET 4
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('EASTERN', 'EASTERN', 'EASTERN', 'R', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('BOXHILL', 'RINGWOOD 2', 'BOX HILL', 'D', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('3147', '3147', '3147', 'P', 'Y');
+
+		INSERT INTO [dbo].[GeographicDomain] ([Code],[Name],[Description],[DomainType],[IsActive]) 
+		VALUES('ASHBURTON', 'ASHBURTON', '3147 in ASHBURTON', 'S', 'Y');
+	END
+
+---------------------- Insertion of [OfficerSupervisors] ----------------------
+
+	IF NOT EXISTS(SELECT * FROM [dbo].[OfficerSupervisors] WHERE [SupervisorID] 
+	IN('User4','User5','User6','User7','User7','User7','User7'))
+	BEGIN
+		DECLARE @PreviousDate DATE = DATEADD(D,-1,GETDATE());
+
+		INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+		values(4, 'User4', @PreviousDate, 'Y')
+		INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+		values(5, 'User5', @PreviousDate, 'Y')
+		INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+		values(6, 'User6', @PreviousDate, 'Y')
+		INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+		values(7, 'User7', @PreviousDate, 'Y')
+		INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+		values(8, 'User7', @PreviousDate, 'Y')
+		INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+		values(9, 'User7', @PreviousDate, 'Y')
+		INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+		values(10, 'User7', @PreviousDate, 'Y')
+	END
