@@ -7,20 +7,20 @@ This repository contains SQL seed scripts used for initializing *master data* in
 These scripts support a streamlined and consistent setup of prerequisite data structures in Azure SQL databases for DevOps workflows. They are particularly useful for:
 
 - Automated environment provisioning
-- Setting up base users, officers, and role mappings
+- Setting up base users, officers, role mappings and geographical domain addresses
 - Supporting testing, development, and production deployments
 
 ---
 
 ## Scripts
 
-### 1. 000_SeedScript_Prod_SingleUserMapping.sql
+### 1. SeedScript_Prod_SingleUserMapping.sql
 - Targets *Production* environments.
 - Sets up multiple users derived from a master admin user.
 - Updates Officer, UserGroupMappings, OfficerRoleMapping, and CrystalReportPermission.
 - Handles role supervision and hierarchical relationships.
 
-### 2. 000_SeedScript_NonProd_ADO_SingleUserMapping.sql
+### 2. SeedScript_NonProd_ADO_SingleUserMapping.sql
 - Targets *Non-Production* or *ADO* environments.
 - Seeds sample users, user groups, and officer profiles.
 - Maps users to groups and assigns roles.
@@ -52,8 +52,9 @@ These scripts support a streamlined and consistent setup of prerequisite data st
 2. Connect to your desired environment (NonProd or Prod).
 3. Replace placeholder values like:
    - 'EnterAdminUser'
-   - 'EnterPasswordHere'
-   - 'EnterReportCode', 'EnterPermissionId'
+   - 'User', 'Description'
+   - 'EnterPassword'
+   - 'EnterReportCode', 'EnterPermissionId' and etc.
 4. Execute the corresponding script file:
-   - For production setup: 000_SeedScript_Prod_SingleUserMapping.sql
-   - For non-production setup: 000_SeedScript_NonProd_ADO_SingleUserMapping.sql
+   - For production setup: SeedScript_Prod_SingleUserMapping.sql
+   - For non-production setup: SeedScript_NonProd_ADO_SingleUserMapping.sql
