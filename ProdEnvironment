@@ -1,0 +1,1038 @@
+-----Mention master user in below declaration-----
+DECLARE @AdminUser NVARCHAR(20) SET @AdminUser ='EnterAdminUser'
+-----Sub user will declare based on admin user-----
+DECLARE @User1 NVARCHAR(20) SET @User1 = @AdminUser+'.001'
+DECLARE @User2 NVARCHAR(20) SET @User2 = @AdminUser+'.002'
+DECLARE @User3 NVARCHAR(20) SET @User3 = @AdminUser+'.003'
+DECLARE @User4 NVARCHAR(20) SET @User4 = @AdminUser+'.004'
+DECLARE @User5 NVARCHAR(20) SET @User5 = @AdminUser+'.005' 
+DECLARE @User6 NVARCHAR(20) SET @User6 = @AdminUser+'.006'
+DECLARE @User7 NVARCHAR(20) SET @User7 = @AdminUser+'.007'
+DECLARE @User8 NVARCHAR(20) SET @User8 = @AdminUser+'.008'
+DECLARE @User9 NVARCHAR(20) SET @User9 = @AdminUser+'.009'
+DECLARE @User10 NVARCHAR(20) SET @User10 = @AdminUser+'.010'
+DECLARE @User11 NVARCHAR(20) SET @User11 = @AdminUser+'.011'
+	
+
+----------------- Reset officers associated to users 
+IF EXISTS(SELECT * FROM [dbo].[Officer] WHERE [AssociatedUserID] LIKE @AdminUser+'%')                     
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = Null, [OfficerNameForCorrespondence] = Null, [SupervisorUserID] = Null WHERE [AssociatedUserID] LIKE @AdminUser+'%';	    
+
+
+----------------- Reset the UserGroupMappings associated to officers
+IF EXISTS(SELECT * FROM [dbo].[UserGroupMappings] WHERE [UserID] LIKE @AdminUser+'%')                     
+DELETE [dbo].[UserGroupMappings] WHERE [UserID] LIKE @AdminUser+'%'
+
+
+---------------------------------------------------------------- User association to [Officer]----------------------------------------------------------------------------------
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = @User4, [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence1' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] IS NULL AND [GivenName] IS NOT NULL AND Status='0' AND [FamilyName] IS NOT NULL AND [StationCodeID] IS NOT NULL)
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = @User5, [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence2' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] IS NULL AND [GivenName] IS NOT NULL AND Status='0' AND [FamilyName] IS NOT NULL AND [StationCodeID] IS NOT NULL)
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = @User6, [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence3' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] IS NULL AND [GivenName] IS NOT NULL AND Status='0' AND [FamilyName] IS NOT NULL AND [StationCodeID] IS NOT NULL)
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = @User7, [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence4' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] IS NULL AND [GivenName] IS NOT NULL AND Status='0' AND [FamilyName] IS NOT NULL AND [StationCodeID] IS NOT NULL)
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = @User8, [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence5' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] IS NULL AND [GivenName] IS NOT NULL AND Status='0' AND [FamilyName] IS NOT NULL AND [StationCodeID] IS NOT NULL)
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = @User9, [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence6' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] IS NULL AND [GivenName] IS NOT NULL AND Status='0' AND [FamilyName] IS NOT NULL AND [StationCodeID] IS NOT NULL)
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = @User10, [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence7' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] IS NULL AND [GivenName] IS NOT NULL AND Status='0' AND [FamilyName] IS NOT NULL AND [StationCodeID] IS NOT NULL)
+UPDATE [dbo].[Officer] SET [AssociatedUserID] = @User11, [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence8' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] IS NULL AND [GivenName] IS NOT NULL AND Status='0' AND [FamilyName] IS NOT NULL AND [StationCodeID] IS NOT NULL)
+
+
+------------------------------------------------- [SupervisorUserID] association to Users--------------------------------------------------------------------------------------------
+UPDATE [dbo].[Officer] SET [SupervisorUserID] =(SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence1' AND [AssociatedUserID] = @User4) WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence1' AND [AssociatedUserID] = @User5
+UPDATE [dbo].[Officer] SET [SupervisorUserID] =(SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence2' AND [AssociatedUserID] = @User5) WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence2' AND [AssociatedUserID] = @User6
+UPDATE [dbo].[Officer] SET [SupervisorUserID] =(SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence3' AND [AssociatedUserID] = @User6) WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence3' AND [AssociatedUserID] = @User7
+UPDATE [dbo].[Officer] SET [SupervisorUserID] =(SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence4' AND [AssociatedUserID] = @User7) WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence4' AND [AssociatedUserID] = @User8
+UPDATE [dbo].[Officer] SET [SupervisorUserID] =(SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence4' AND [AssociatedUserID] = @User7) WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence5' AND [AssociatedUserID] = @User9
+UPDATE [dbo].[Officer] SET [SupervisorUserID] =(SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence4' AND [AssociatedUserID] = @User7) WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence6' AND [AssociatedUserID] = @User10
+UPDATE [dbo].[Officer] SET [SupervisorUserID] =(SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence4' AND [AssociatedUserID] = @User7) WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence7' AND [AssociatedUserID] = @User11
+
+
+----------------------------------------[UserGroupMappings] for 8 group and 8 role--------------------------------------------------------------------------------------------
+INSERT INTO [dbo].[UserGroupMappings] (UserID, GroupID) 
+VALUES((SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence]='OfficerNameForCorrespondence1' AND [AssociatedUserID] = @User4),(SELECT ID FROM [UserGroups] WHERE [Code] = 'Code1'))
+INSERT INTO [dbo].[UserGroupMappings] (UserID, GroupID) 
+VALUES((SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence]='OfficerNameForCorrespondence2' AND [AssociatedUserID] = @User5),(SELECT ID FROM [UserGroups] WHERE [Code] = 'Code2'))
+INSERT INTO [dbo].[UserGroupMappings] (UserID, GroupID) 
+VALUES((SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence]='OfficerNameForCorrespondence3' AND [AssociatedUserID] = @User6),(SELECT ID FROM [UserGroups] WHERE [Code] = 'Code3'))
+INSERT INTO [dbo].[UserGroupMappings] (UserID, GroupID) 
+VALUES((SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence]='OfficerNameForCorrespondence1' AND [AssociatedUserID] = @User7),(SELECT ID FROM [UserGroups] WHERE [Code] = 'Code4'))
+INSERT INTO [dbo].[UserGroupMappings] (UserID, GroupID) 
+VALUES((SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence]='OfficerNameForCorrespondence5' AND [AssociatedUserID] = @User8),(SELECT ID FROM [UserGroups] WHERE [Code] = 'Code5'))
+INSERT INTO [dbo].[UserGroupMappings] (UserID, GroupID) 
+VALUES((SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence]='OfficerNameForCorrespondence6' AND [AssociatedUserID] = @User9),(SELECT ID FROM [UserGroups] WHERE [Code] = 'Code6'))
+INSERT INTO [dbo].[UserGroupMappings] (UserID, GroupID) 
+VALUES((SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence]='OfficerNameForCorrespondence7' AND [AssociatedUserID] = @User10),(SELECT ID FROM [UserGroups] WHERE [Code] = 'Code7'))
+INSERT INTO [dbo].[UserGroupMappings] (UserID, GroupID) 
+VALUES((SELECT TOP 1 [AssociatedUserID] FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] ='OfficerNameForCorrespondence8' AND [AssociatedUserID] = @User11),(SELECT ID FROM [UserGroups] WHERE [Code] = 'Code8'))
+
+----- UserGroupMappings for remaining 4 groups
+INSERT Into [dbo].[UserGroupMappings] (UserID, GroupID) values(@AdminUser,(SELECT ID from [UserGroups] WHERE [Code] = 'Code1'))
+INSERT Into [dbo].[UserGroupMappings] (UserID, GroupID) values(@User1,(SELECT ID from [UserGroups] WHERE [Code] = 'Code2'))
+INSERT Into [dbo].[UserGroupMappings] (UserID, GroupID) values(@User2,(SELECT ID from [UserGroups] WHERE [Code] = 'Code3'))
+INSERT Into [dbo].[UserGroupMappings] (UserID, GroupID) values(@User3,(SELECT ID from [UserGroups] WHERE [Code] = 'Code4'))
+INSERT Into [dbo].[UserGroupMappings] (UserID, GroupID) values(@User3,(SELECT ID from [UserGroups] WHERE [Code] = 'Code5'))
+
+
+-----------------------------------[OfficerRoleMapping] for 8 group and 8 role--------------------------------------------------------------------------------------
+----- Deletion of existed OfficerRoleMapping
+IF EXISTS(SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User4))       		
+DELETE FROM [OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User4)
+IF EXISTS(SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User5))       		
+DELETE FROM [OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User5)
+IF EXISTS(SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User6))       		
+DELETE FROM [OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User6)
+IF EXISTS(SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User7))       		
+DELETE FROM [OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User7)
+IF EXISTS(SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User8))       		
+DELETE FROM [OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User8)
+IF EXISTS(SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User9))       		
+DELETE FROM [OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User9)
+IF EXISTS(SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User10))       		
+DELETE FROM [OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User10)
+IF EXISTS(SELECT * FROM [dbo].[OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User11))       		
+DELETE FROM [OfficerRoleMapping] WHERE [OfficerID] = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User11)
+
+----- Insertion of not existed OfficerRoleMapping
+INSERT INTO [dbo].[OfficerRoleMapping] ([OfficerID], [RoleID]) 
+VALUES((SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User4), (SELECT ID FROM [dbo].[OfficerRole] WHERE Code ='Code1'))
+INSERT INTO [dbo].[OfficerRoleMapping] ([OfficerID], [RoleID]) 
+VALUES((SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User5), (SELECT ID FROM [dbo].[OfficerRole] WHERE Code ='Code2'))
+INSERT INTO [dbo].[OfficerRoleMapping] ([OfficerID], [RoleID]) 
+VALUES((SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User6), (SELECT ID FROM [dbo].[OfficerRole] WHERE Code ='Code3'))
+INSERT INTO [dbo].[OfficerRoleMapping] ([OfficerID], [RoleID]) 
+VALUES((SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User7), (SELECT ID FROM [dbo].[OfficerRole] WHERE Code ='Code4'))
+INSERT INTO [dbo].[OfficerRoleMapping] ([OfficerID], [RoleID]) 
+VALUES((SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User8), (SELECT ID FROM [dbo].[OfficerRole] WHERE Code ='Code5'))
+INSERT INTO [dbo].[OfficerRoleMapping] ([OfficerID], [RoleID]) 
+VALUES((SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User9), (SELECT ID FROM [dbo].[OfficerRole] WHERE Code ='Code6'))
+INSERT INTO [dbo].[OfficerRoleMapping] ([OfficerID], [RoleID]) 
+VALUES((SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User10), (SELECT ID FROM [dbo].[OfficerRole] WHERE Code ='Code7'))
+INSERT INTO [dbo].[OfficerRoleMapping] ([OfficerID], [RoleID]) 
+VALUES((SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User11), (SELECT ID FROM [dbo].[OfficerRole] WHERE Code ='Code8'))
+
+----------------------------------------------- [OfficerSupervisors] ----------------------------------------------------------------------------------------------------------
+----------- DELETE [OfficerID] IF EXISTS ALREADY
+DELETE FROM [dbo].[OfficerSupervisors] WHERE [OfficerID] = (SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence1' AND [AssociatedUserID] = @User5)
+DELETE FROM [dbo].[OfficerSupervisors] WHERE [OfficerID] = (SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence2' AND [AssociatedUserID] = @User6)
+DELETE FROM [dbo].[OfficerSupervisors] WHERE [OfficerID] = (SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence3' AND [AssociatedUserID] = @User7)
+DELETE FROM [dbo].[OfficerSupervisors] WHERE [OfficerID] = (SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence4' AND [AssociatedUserID] = @User8)
+DELETE FROM [dbo].[OfficerSupervisors] WHERE [OfficerID] = (SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence5' AND [AssociatedUserID] = @User9)
+DELETE FROM [dbo].[OfficerSupervisors] WHERE [OfficerID] = (SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence6' AND [AssociatedUserID] = @User10)
+DELETE FROM [dbo].[OfficerSupervisors] WHERE [OfficerID] = (SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence7' AND [AssociatedUserID] = @User11)
+
+
+----------- DELETE [SupervisorID] IF EXISTS ALREADY In [OfficerSupervisors]
+DELETE FROM [dbo].[OfficerSupervisors] WHERE [SupervisorID] LIKE @AdminUser+'%'
+
+
+----------- INSERT [OfficerID], [SupervisorID] In [OfficerSupervisors] IF NOT EXISTS ALREADY 
+DECLARE @PreviousDate DATE = DATEADD(D,-1,GETDATE());
+
+INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+values((SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence1' AND [AssociatedUserID] = @User5), @User4, @PreviousDate, 'Y')
+INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+values((SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence2' AND [AssociatedUserID] = @User6), @User5, @PreviousDate, 'Y')
+INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+values((SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence3' AND [AssociatedUserID] = @User7), @User6, @PreviousDate, 'Y')
+INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+values((SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence4' AND [AssociatedUserID] = @User8), @User7, @PreviousDate, 'Y')
+INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+values((SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence5' AND [AssociatedUserID] = @User9), @User7, @PreviousDate, 'Y')
+INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+values((SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence6' AND [AssociatedUserID] = @User10), @User7, @PreviousDate, 'Y')
+INSERT INTO [dbo].[OfficerSupervisors] ([OfficerID], [SupervisorID], [StartDate], [IsCurrent])
+values((SELECT ID FROM [dbo].[Officer] WHERE [OfficerNameForCorrespondence] = 'OfficerNameForCorrespondence7' AND [AssociatedUserID] = @User11), @User7, @PreviousDate, 'Y')
+
+---- Officer Details Updation
+DECLARE @RandomDigit NVARCHAR(10) SET @RandomDigit =  LEFT(CAST(RAND()*1000000000 AS INT),5)
+DECLARE @Code NVARCHAR(20) = @RandomDigit
+DECLARE @GivenName NVARCHAR SET @GivenName = (SELECT GivenName FROM Users WHERE UserID = @AdminUser)
+DECLARE @FamilyName NVARCHAR SET @FamilyName = (SELECT FamilyName FROM Users WHERE UserID = @AdminUser)
+DECLARE @OficerIdNo VARCHAR(10) = @RandomDigit
+DECLARE @StateId INT SET @StateId = 1
+
+UPDATE [dbo].[Officer] SET [Code] = @Code +' '+'Officer1'+@GivenName+@FamilyName, [GivenName] = @GivenName+' '+'Officer1', [FamilyName] = @FamilyName+' '+'Officer1', [OfficerIDNo] = @OficerIdNo, 
+[Rank] = 'Officer1', [StateID] = @StateId, [HHCPassword] = NULL, [MiddleNames] = NULL, [Initials] = NULL, [DigitalSignatureID] = '0' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User4)
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SET @RandomDigit =  LEFT(CAST(RAND()*1000000000 AS INT),5)
+SET @Code = @RandomDigit
+SET @OficerIdNo = @RandomDigit
+SET @StateId = 1
+
+UPDATE [dbo].[Officer] SET [Code] = @Code+' '+ 'Officer2'+@GivenName+@FamilyName, [GivenName] = @GivenName+' '+'Officer2', [FamilyName] = @FamilyName+' '+'Officer2', [OfficerIDNo] = @OficerIdNo, 
+[Rank] = 'Officer2', [StateID] = @StateId, [HHCPassword] = NULL, [MiddleNames] = NULL, [Initials] = NULL, [DigitalSignatureID] = '0' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User5)
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SET @RandomDigit =  LEFT(CAST(RAND()*1000000000 AS INT),5)
+SET @Code = @RandomDigit
+SET @OficerIdNo = @RandomDigit
+SET @StateId = 1
+
+UPDATE [dbo].[Officer] SET [Code] = @Code+' '+ 'Officer3'+@GivenName+@FamilyName, [GivenName] = @GivenName+' '+'Officer3', [FamilyName] = @FamilyName+' '+'Officer3', [OfficerIDNo] = @OficerIdNo, 
+[Rank] = 'Officer3', [StateID] = @StateId, [HHCPassword] = NULL, [MiddleNames] = NULL, [Initials] = NULL, [DigitalSignatureID] = '0' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User6)
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SET @RandomDigit =  LEFT(CAST(RAND()*1000000000 AS INT),5)
+SET @Code = @RandomDigit
+SET @OficerIdNo = @RandomDigit
+SET @StateId = 1
+
+UPDATE [dbo].[Officer] SET [Code] = @Code+' '+ 'Officer4'+@GivenName+@FamilyName, [GivenName] = @GivenName+' '+'Officer4', [FamilyName] = @FamilyName+' '+'Officer4', [OfficerIDNo] = @OficerIdNo, 
+[Rank] = 'Officer4', [StateID] = @StateId, [HHCPassword] = NULL, [MiddleNames] = NULL, [Initials] = NULL, [DigitalSignatureID] = '0' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User7)
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SET @RandomDigit =  LEFT(CAST(RAND()*1000000000 AS INT),5)
+SET @Code = @RandomDigit
+SET @OficerIdNo = @RandomDigit
+SET @StateId = 1
+
+UPDATE [dbo].[Officer] SET [Code] = @Code+' '+ 'Officer5'+@GivenName+@FamilyName, [GivenName] = @GivenName+' '+'Officer5', [FamilyName] = @FamilyName+' '+'Officer5', [OfficerIDNo] = @OficerIdNo, 
+[Rank] = 'Officer5', [StateID] = @StateId, [HHCPassword] = NULL, [MiddleNames] = NULL, [Initials] = NULL, [DigitalSignatureID] = '0' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User8)
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SET @RandomDigit =  LEFT(CAST(RAND()*1000000000 AS INT),5)
+SET @Code = @RandomDigit
+SET @OficerIdNo = @RandomDigit
+SET @StateId = 1
+
+UPDATE [dbo].[Officer] SET [Code] = @Code+' '+ 'Officer6'+@GivenName+@FamilyName, [GivenName] = @GivenName+' '+'Officer6', [FamilyName] = @FamilyName+' '+'Officer6', [OfficerIDNo] = @OficerIdNo, 
+[Rank] = 'Officer6', [StateID] = @StateId, [HHCPassword] = NULL, [MiddleNames] = NULL, [Initials] = NULL, [DigitalSignatureID] = '0' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User9)
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SET @RandomDigit =  LEFT(CAST(RAND()*1000000000 AS INT),5)
+SET @Code = @RandomDigit
+SET @OficerIdNo = @RandomDigit
+SET @StateId = 1
+
+UPDATE [dbo].[Officer] SET [Code] = @Code+' '+ 'Officer7'+@GivenName+@FamilyName, [GivenName] = @GivenName+' '+'Officer7', [FamilyName] = @FamilyName+' '+'Officer7', [OfficerIDNo] = @OficerIdNo, 
+[Rank] = 'Officer7', [StateID] = @StateId, [HHCPassword] = NULL, [MiddleNames] = NULL, [Initials] = NULL, [DigitalSignatureID] = '0' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User10)
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+SET @RandomDigit =  LEFT(CAST(RAND()*1000000000 AS INT),5)
+SET @Code = @RandomDigit
+SET @OficerIdNo = @RandomDigit
+SET @StateId = 1
+
+UPDATE [dbo].[Officer] SET [Code] = @Code+' '+ 'Officer8'+@GivenName+@FamilyName, [GivenName] = @GivenName+' '+'Officer8', [FamilyName] = @FamilyName+' '+'Officer8', [OfficerIDNo] = @OficerIdNo, 
+[Rank] = 'Officer8', [StateID] = @StateId, [HHCPassword] = NULL, [MiddleNames] = NULL, [Initials] = NULL, [DigitalSignatureID] = '0' WHERE ID = (SELECT TOP 1 ID FROM [dbo].[Officer] WHERE [AssociatedUserID] = @User11)
+
+
+--CRYSTAL REPORT PERMISSIONS FOR USER SOVUser-----
+DECLARE @reportID INT = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+DECLARE @userID VARCHAR(20)=@User4
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCodeSR'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+--CRYSTAL REPORT PERMISSIONS FOR USER DSUser-----
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+Set @userID =@User5
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCodeSR'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+--CRYSTAL REPORT PERMISSIONS FOR USER RMUser-----
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+Set @userID =@User6
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCodeSR'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+--CRYSTAL REPORT PERMISSIONS FOR USER SGTUser-----
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+Set @userID =@User7
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCodeSR'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+--CRYSTAL REPORT PERMISSIONS FOR USER SOUser-----
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+Set @userID =@User8
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCodeSR'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+--CRYSTAL REPORT PERMISSIONS FOR USER JOUser-----
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+Set @userID =@User9
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCodeSR'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+--CRYSTAL REPORT PERMISSIONS FOR USER SALOUser-----
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+Set @userID =@User10
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCodeSR'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+--CRYSTAL REPORT PERMISSIONS FOR USER SAASOUser-----
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+Set @userID =@User11
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] =  @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES( @userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCodeSR'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
+
+Set @reportID = (SELECT TOP 1 [ReportID] FROM [dbo].[CrystalReport] WHERE Code IN('EnterReportCode'))
+IF NOT EXISTS(SELECT * FROM [CrystalReportPermission] WHERE [UserID] = @userID AND [ReportID] = @reportID)
+BEGIN
+    INSERT INTO  [dbo].[CrystalReportPermission] ([UserID], [ReportID], [Permissions], [GroupID])
+    VALUES(@userID,@reportID,'EnterPermissionId',Null)
+END
