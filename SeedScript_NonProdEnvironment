@@ -1,8 +1,3 @@
--- ===============================================
--- Author:Shubham Giri
--- Date: dd/mm/yyyy
--- Description: Seed script for NonProd user group mapping 
--- ================================================
 SET ANSI_NULLS ON;
 SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
